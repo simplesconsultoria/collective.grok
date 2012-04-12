@@ -1,0 +1,6 @@
+Credits
+===========
+
+Development of this product was sponsored by :
+    
+    * `Simples Consultoria <http://www.simplesconsultoria.com.br/>`_.
