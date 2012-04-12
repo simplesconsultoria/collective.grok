@@ -6,7 +6,7 @@
 
     <includeDependencies package="." />
 
-    <include package="five.grok" />
+    <include package="collective.grok" file="meta.zcml" />
 
     <grok:grok package="." />
 
