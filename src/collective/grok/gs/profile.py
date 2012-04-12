@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import sys
+
 from Products.GenericSetup.interfaces import BASE
-from Products.GenericSetup.registry import _profile_registry
 
 
 def profile(name=u'default', title=None, description=None,
@@ -22,10 +22,11 @@ def profile(name=u'default', title=None, description=None,
     if description is None:
         description = u''
 
-    _profile_registry.registerProfile(name,
-                                      title,
-                                      description,
-                                      directory,
-                                      product,
-                                      provides,
-                                      for_)
+    # XXX we do not have function grokkers (yet) so we put the annotation
+    # on the module and defer its registration.
+    gs_profiles = frame.f_locals.get('__grok_profiles__', None)
+    if gs_profiles is None:
+        frame.f_locals['__grok_profiles__'] = gs_profiles = []
+
+    profile = (name, title, description, directory, product, provides, for_)
+    gs_profiles.append(profile)

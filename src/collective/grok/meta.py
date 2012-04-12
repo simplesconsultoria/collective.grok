@@ -2,9 +2,19 @@
 import martian
 from Products.GenericSetup.registry import _export_step_registry
 from Products.GenericSetup.registry import _import_step_registry
+from Products.GenericSetup.registry import _profile_registry
 from Products.GenericSetup.upgrade import _registerUpgradeStep
+
 from Products.GenericSetup.upgrade import UpgradeStep
-from collective.grok import gs
+
+
+class ProfileGrokker(martian.GlobalGrokker):
+
+    def grok(self, name, module, module_info, config, **kw):
+        gs_profiles = module_info.getAnnotation('grok.profiles', [])
+        for profile in gs_profiles:
+            _profile_registry.registerProfile(*profile)
+        return True
 
 
 class ExportStepDecoratorGrokker(martian.GlobalGrokker):

@@ -131,24 +131,6 @@ class TestExportStep(BaseTestCase):
                         'Export step run as planned')
 
 
-def register_profile():
-    from Products.GenericSetup.interfaces import EXTENSION
-    gs.profile(name=u'testing',
-               title=u'A fake profile',
-               description=u'A fake profile for ZCMLess config',
-               directory='gs/profiles/testing',
-               provides=EXTENSION)
-
-
-def register_profile_no_keywords():
-    from Products.GenericSetup.interfaces import EXTENSION
-    gs.profile(u'testing_no_kw',
-               u'A fake profile',
-               u'A fake profile for ZCMLess config',
-               'gs/profiles/testing',
-               EXTENSION)
-
-
 class TestProfile(BaseTestCase):
     """ Test Profile registration """
 
@@ -158,25 +140,29 @@ class TestProfile(BaseTestCase):
         return valid_profiles and True or False
 
     def test_not_registered(self):
-        self.assertFalse(self.is_registered('collective.grok.tests:testing'),
+        profile_id = 'collective.grok.tests.gs:testing'
+        self.assertFalse(self.is_registered(profile_id),
                          'Profile should not be registered')
 
     def test_registered(self):
-        self.assertFalse(self.is_registered('collective.grok.tests:testing'),
-                         'Profile should not be registered')
-        # Register our profile
-        register_profile()
-
-        # Now we should have a profile
-        self.assertTrue(self.is_registered('collective.grok.tests:testing'),
-                        'Profile should be registered')
-
-    def test_registered_no_kw(self):
-        profile_id = 'collective.grok.tests:testing_no_kw'
+        profile_id = 'collective.grok.tests.gs:testing'
         self.assertFalse(self.is_registered(profile_id),
                          'Profile should not be registered')
         # Register our profile
-        register_profile_no_keywords()
+        gs_module = 'collective.grok.tests.gs.profile'
+        grokcore.component.testing.grok(gs_module)
+
+        # Now we should have a profile
+        self.assertTrue(self.is_registered(profile_id),
+                        'Profile should be registered')
+
+    def test_registered_no_kw(self):
+        profile_id = 'collective.grok.tests.gs:testing_no_kw'
+        self.assertFalse(self.is_registered(profile_id),
+                         'Profile should not be registered')
+        # Register our profile
+        gs_module = 'collective.grok.tests.gs.profile_no_kw'
+        grokcore.component.testing.grok(gs_module)
 
         # Now we should have a profile
         self.assertTrue(self.is_registered(profile_id),
