@@ -287,3 +287,31 @@ collective.grok provide a decorator to grok this code:
         site = context.getSite()
         site.title = u'A New Title'
 
+
+i18n
+---------------
+
+Registering Translations
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Using ZCML to register a translation directory for a package:
+
+::
+
+    <configure
+        ...
+        xmlns:i18n="http://namespaces.zope.org/i18n"
+        ...>
+
+      <i18n:registerTranslations directory="locales" />
+
+
+Using collective.grok, the same registration would be done:
+
+::
+    
+    from collective.grok import i18n
+    
+    i18n.registerTranslations(directory='locales')
+
+
